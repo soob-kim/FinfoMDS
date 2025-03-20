@@ -11,11 +11,15 @@ mm_cmds(nit = 100, lambda = 0.2, z0, D, y)
 
 \item{lambda}{Hyperparameter}
 
-\item{z0}{Initialization of lower dimension representation; Can use MDS result}
+\item{z0}{Initialization of configuration; Can use MDS output or random init.}
 
 \item{D}{Original distance matrix}
 
 \item{y}{Treatment vector}
+}
+\value{
+list of z: obtained configuration,
+F_z: obtained pseuo-F value, F_0: original pseudo-F value
 }
 \description{
 MM algorithm for FMDS

@@ -10,8 +10,6 @@
 #'
 #' @return
 #' @export
-#'
-#' @examples
 get_lambda <- function(p=p_up, p_diff=p_up-p0, model_lambda=model_out){
   lambda <- predict(model_lambda, newdata=data.frame(p_z=p, p_z_diff=p_diff))
   if(is.na(lambda)){
@@ -41,8 +39,6 @@ Scalar of objective function value of MDS
 #'
 #' @return
 #' @export
-#'
-#' @examples
 get_lambda <- function(p=p_up, p_diff=p_up-p0, model_lambda=model_out){
   lambda <- predict(model_lambda, newdata=data.frame(p_z=p, p_z_diff=p_diff))
   if(is.na(lambda)){

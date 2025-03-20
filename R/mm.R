@@ -4,8 +4,6 @@
 #'
 #' @return Distance matrix
 #' @export
-#'
-#' @examples
 get_dist_mat <- function(z){
   z_dist <- as.matrix(dist(z))
   return(z_dist)
@@ -20,8 +18,6 @@ get_dist_mat <- function(z){
 #'
 #' @return matrix of pseudo-F values; 1st col of original data, 2nd col of reduced dim
 #' @export
-#'
-#' @examples
 pair_by_rank <- function(D, z, y){
   f0_sorted <- get_p(d=D, trt=y)$ratio_all
   fz_sorted <- get_p(mat=z, trt=y)$ratio_all
@@ -37,8 +33,6 @@ pair_by_rank <- function(D, z, y){
 #' #'
 #' #' @return
 #' #' @export
-#' #'
-#' #' @examples
 #' get_lambda <- function(p=p_up, p_diff=p_up-p0, model_lambda=model_out){
 #'   lambda <- predict(model_lambda, newdata=data.frame(p_z=p, p_z_diff=p_diff))
 #'   if(is.na(lambda)){
@@ -56,8 +50,6 @@ pair_by_rank <- function(D, z, y){
 #'
 #' @return Scalar of objective function value of MDS
 #' @export
-#'
-#' @examples
 mds_obj <- function(D, z){
   z_distmat <- get_dist_mat(z)
   return(sum((D - z_distmat)^2)/2)
@@ -72,8 +64,6 @@ mds_obj <- function(D, z){
 #'
 #' @return list of objective values and sign (for computation later)
 #' @export
-#'
-#' @examples
 conf_obj <- function(y, z, D){
   N <- length(y)
   a <- length(unique(y))
@@ -93,14 +83,13 @@ conf_obj <- function(y, z, D){
 #'
 #' @param nit Number of iterations; 100 by default
 #' @param lambda Hyperparameter
-#' @param z0 Initialization of lower dimension representation; Can use MDS result
+#' @param z0 Initialization of configuration; Can use MDS output or random init.
 #' @param D Original distance matrix
 #' @param y Treatment vector
 #'
-#' @return
+#' @return list of z: obtained configuration,
+#' F_z: obtained pseuo-F value, F_0: original pseudo-F value
 #' @export
-#'
-#' @examples
 mm_cmds <- function(nit = 100, lambda = 0.2, z0, D, y){
   N <- dim(z0)[1]
   S <- dim(z0)[2]

@@ -4,8 +4,6 @@
 #'
 #' @return A N by N matrix of indicators of equal treatment
 #' @export
-#'
-#' @examples
 get_ind_mat <- function(y){
     N = length(y)
     mat = matrix(0, nrow = N, ncol = N)
@@ -26,8 +24,6 @@ get_ind_mat <- function(y){
 #'
 #' @return
 #' @export
-#'
-#' @examples
 pseudo_F <- function(mat=NULL, trt, d = NULL){
     if(is.null(d)){
         d <- as.matrix(dist(mat))
@@ -57,8 +53,6 @@ pseudo_F <- function(mat=NULL, trt, d = NULL){
 #'
 #' @return
 #' @export
-#'
-#' @examples
 get_p <- function(mat=NULL, d=NULL, trt, n_iter=999){
     # initialize
     trt <- as.matrix(trt)
