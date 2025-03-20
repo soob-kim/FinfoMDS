@@ -1,13 +1,28 @@
 Package: fmds
 Type: Package
-Title: What the Package Does (Title Case)
+Title: FMDS: Self-supervised Multidimensional Scaling with F-ratio for microbiome visualization
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Soobin Kim, Hyungseok Kim
+Maintainer: Soobin Kim <sbbkim@ucdavis.edu>, Hyungseok Kim <hskimm@mit.edu>
+Description: We present a self-supervised MDS approach informed by the dispersions of observations that share a common binary label (F-ratio). Our visualization accurately configures the F-ratio while consistently preserving the global structure with a low data distortion compared to existing dimensionality reduction tools. Using an algal microbiome dataset, we show that this new method better illustrates the community's response to the host, suggesting its potential impact on microbiology and ecology data analysis.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Imports:
+    phyloseq,
+    ggplot2,
+    ape,
+    vegan,
+    dplyr
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+biocViews: 
+    Software, 
+    Genomics, 
+    Sequencing
 URL: https://github.com/soob-kim/fmds
 BugReports: https://github.com/soob-kim/fmds/issues
+RoxygenNote: 7.3.2
