@@ -9,11 +9,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    phyloseq,
-    ggplot2,
-    ape,
-    vegan,
-    dplyr
 Suggests: 
     testthat,
     knitr,

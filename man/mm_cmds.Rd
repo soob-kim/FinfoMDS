@@ -4,18 +4,20 @@
 \alias{mm_cmds}
 \title{MM algorithm for FMDS}
 \usage{
-mm_cmds(nit = 100, lambda = 0.2, z0, D, y)
+mm_cmds(nit = 100, lambda = 0.2, z0, D, y, z)
 }
 \arguments{
 \item{nit}{Number of iterations; 100 by default}
 
-\item{lambda}{Hyperparameter}
+\item{lambda}{Hyperparameter; 0.2 by default}
 
 \item{z0}{Initialization of configuration; Can use MDS output or random init.}
 
 \item{D}{Original distance matrix}
 
 \item{y}{Treatment vector}
+
+\item{z}{Object matrix; used to build distance matrix d; d is prioritized}
 }
 \value{
 list of z: obtained configuration,
@@ -23,4 +25,13 @@ F_z: obtained pseuo-F value, F_0: original pseudo-F value
 }
 \description{
 MM algorithm for FMDS
+}
+\examples{
+set.seed(100)
+z <- rbind(matrix(rnorm(100), ncol=4),
+matrix(rnorm(100, 2), ncol=4))
+y <- rep(c(0,1), each = 25)
+d <- get_dist_mat(z)
+z0 <- matrix(rnorm(100),ncol=2)
+mm_cmds(z0 = z0, D = d, y = y)
 }

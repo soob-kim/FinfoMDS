@@ -3,7 +3,13 @@
 #' @param z Matrix or vector of observations
 #'
 #' @return Distance matrix
+#' @importFrom stats dist
 #' @export
+#' @examples
+#' set.seed(100)
+#' z <- rbind(matrix(rnorm(100), ncol=4),
+#' matrix(rnorm(100, 2), ncol=4))
+#' get_dist_mat(z)
 get_dist_mat <- function(z){
   z_dist <- as.matrix(dist(z))
   return(z_dist)
@@ -16,7 +22,8 @@ get_dist_mat <- function(z){
 #' @param z Lower dimension representation
 #' @param y Treatment vector
 #'
-#' @return matrix of pseudo-F values; 1st col of original data, 2nd col of reduced dim
+#' @return matrix of pseudo-F values;
+#' 1st col of original data, 2nd col of reduced dim
 #' @export
 pair_by_rank <- function(D, z, y){
   f0_sorted <- get_p(d=D, trt=y)$ratio_all
@@ -24,23 +31,6 @@ pair_by_rank <- function(D, z, y){
   mat_pair <- cbind(f0_sorted, fz_sorted)
   return(mat_pair)
 }
-
-#' #' Get lambda from models
-#' #'
-#' #' @param p
-#' #' @param p_diff
-#' #' @param model_lambda
-#' #'
-#' #' @return
-#' #' @export
-#' get_lambda <- function(p=p_up, p_diff=p_up-p0, model_lambda=model_out){
-#'   lambda <- predict(model_lambda, newdata=data.frame(p_z=p, p_z_diff=p_diff))
-#'   if(is.na(lambda)){
-#'     if (p_diff>0.11) lambda <- 0.5
-#'     else lambda <- 0.08
-#'   }
-#'   return(lambda)
-#' }
 
 
 #' MDS objective
@@ -82,24 +72,41 @@ conf_obj <- function(y, z, D){
 #' MM algorithm for FMDS
 #'
 #' @param nit Number of iterations; 100 by default
-#' @param lambda Hyperparameter
+#' @param lambda Hyperparameter; 0.2 by default
 #' @param z0 Initialization of configuration; Can use MDS output or random init.
 #' @param D Original distance matrix
 #' @param y Treatment vector
+#' @param z Object matrix; used to build distance matrix d; d is prioritized
 #'
 #' @return list of z: obtained configuration,
 #' F_z: obtained pseuo-F value, F_0: original pseudo-F value
+#' @importFrom stats dist
 #' @export
-mm_cmds <- function(nit = 100, lambda = 0.2, z0, D, y){
+#' @examples
+#' set.seed(100)
+#' z <- rbind(matrix(rnorm(100), ncol=4),
+#' matrix(rnorm(100, 2), ncol=4))
+#' y <- rep(c(0,1), each = 25)
+#' d <- get_dist_mat(z)
+#' z0 <- matrix(rnorm(100),ncol=2)
+#' mm_cmds(z0 = z0, D = d, y = y)
+
+mm_cmds <- function(nit = 100, lambda = 0.2, z0, D, y, z){
   N <- dim(z0)[1]
   S <- dim(z0)[2]
   a <- length(unique(y))
   y_indmat <- get_ind_mat(y)
-  f_ratio <- pseudo_F(mat=z, d = D, trt = y)
+  if(is.null(D)){
+      D <- get_dist_mat(z)
+  } else {
+      D <- as.matrix(D)
+  }
+  f_ratio <- pseudo_F(mat = z, d = D, trt = y)
   z_temp <- z_up <- z0
   p0 <- get_p(d = D, trt = y)$p
   log_iter_mat <- matrix(0, nrow=0, ncol=6)
-  colnames(log_iter_mat) <- c('epoch', 'obj', 'obj_mds', 'obj_confr', 'p_z', 'p_0')
+  colnames(log_iter_mat) <-
+      c('epoch', 'obj', 'obj_mds', 'obj_confr', 'p_z', 'p_0')
   # obj_prev <- 0
   p_prev <- 1
   for(t in 0:nit){
@@ -120,7 +127,8 @@ mm_cmds <- function(nit = 100, lambda = 0.2, z0, D, y){
     }
 
     z_distmat <- as.matrix(dist(z_up))
-    f_diff_nominator <- sum((1 - a * y_indmat * (1+f_ratio_pred*(a-1)/(N-a))) * z_distmat^2)
+    f_diff_nominator <- sum((1 - a * y_indmat * (1+f_ratio_pred*(a-1)/(N-a))) *
+                                z_distmat^2)
     delta <- sign(f_diff_nominator)
     obj_conf <- abs(f_diff_nominator)
     obj_mds <- mds_obj(D, z_up)
@@ -145,7 +153,8 @@ mm_cmds <- function(nit = 100, lambda = 0.2, z0, D, y){
       z_diff <- -sweep(x=z_up, MARGIN=2, STATS=as.matrix(z_up[i,]), FUN="-")
 
       z_temp[i,] <- (1+lambda*delta) * (apply(z_up[y!=y[i],], 2, sum)) +
-        (1-lambda*delta*(1+2*f_ratio_pred/(N-2))) * (apply(z_up[y==y[i],], 2, sum)) +
+        (1-lambda*delta*(1+2*f_ratio_pred/(N-2))) *
+          (apply(z_up[y==y[i],], 2, sum)) +
         apply(sweep(x=z_diff, MARGIN=1, STATS=coeff[,i], FUN="*"), 2, sum)
 
       z_temp[i,] <- z_temp[i,] / (N - N*lambda*delta*f_ratio_pred/(N-2))

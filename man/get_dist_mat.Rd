@@ -15,3 +15,9 @@ Distance matrix
 \description{
 Distance between vectors
 }
+\examples{
+set.seed(100)
+z <- rbind(matrix(rnorm(100), ncol=4),
+matrix(rnorm(100, 2), ncol=4))
+get_dist_mat(z)
+}

@@ -14,7 +14,8 @@ pair_by_rank(D, z, y)
 \item{y}{Treatment vector}
 }
 \value{
-matrix of pseudo-F values; 1st col of original data, 2nd col of reduced dim
+matrix of pseudo-F values;
+1st col of original data, 2nd col of reduced dim
 }
 \description{
 Local regression on one-on-one paired by p value

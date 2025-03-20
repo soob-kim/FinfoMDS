@@ -15,6 +15,10 @@ get_p(mat = NULL, d = NULL, trt, n_iter = 999)
 
 \item{n_iter}{Number of iterations; defaults to 999}
 }
+\value{
+list of ratio_all: vector of obtained pseudo-F values from permutations,
+ratio: pseudo-F value, p: p-value from PERMANOVA
+}
 \description{
 Get p-value of PERMANOVA
 }

@@ -13,6 +13,9 @@ pseudo_F(mat = NULL, trt, d = NULL)
 
 \item{d}{Distance matrix; if NULL, obtain from mat using Euclidean distance}
 }
+\value{
+pseudo-F value
+}
 \description{
 Title Get pseudo-F value for PERMANOVA
 }

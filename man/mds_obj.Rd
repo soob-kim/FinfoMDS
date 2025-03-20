@@ -2,23 +2,7 @@
 % Please edit documentation in R/mm.R
 \name{mds_obj}
 \alias{mds_obj}
-\title{#' Get lambda from models
-#'
-#' @param p
-#' @param p_diff
-#' @param model_lambda
-#'
-#' @return
-#' @export
-get_lambda <- function(p=p_up, p_diff=p_up-p0, model_lambda=model_out){
-  lambda <- predict(model_lambda, newdata=data.frame(p_z=p, p_z_diff=p_diff))
-  if(is.na(lambda)){
-    if (p_diff>0.11) lambda <- 0.5
-    else lambda <- 0.08
-  }
-  return(lambda)
-}
-MDS objective}
+\title{MDS objective}
 \usage{
 mds_obj(D, z)
 }
@@ -31,21 +15,5 @@ mds_obj(D, z)
 Scalar of objective function value of MDS
 }
 \description{
-#' Get lambda from models
-#'
-#' @param p
-#' @param p_diff
-#' @param model_lambda
-#'
-#' @return
-#' @export
-get_lambda <- function(p=p_up, p_diff=p_up-p0, model_lambda=model_out){
-  lambda <- predict(model_lambda, newdata=data.frame(p_z=p, p_z_diff=p_diff))
-  if(is.na(lambda)){
-    if (p_diff>0.11) lambda <- 0.5
-    else lambda <- 0.08
-  }
-  return(lambda)
-}
 MDS objective
 }
