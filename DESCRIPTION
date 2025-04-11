@@ -15,9 +15,9 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 biocViews: 
-    Software, 
-    Genomics, 
-    Sequencing
+    DimensionReduction,
+    MultidimensionalScaling,
+    Visualization
 URL: https://github.com/soob-kim/fmds
 BugReports: https://github.com/soob-kim/fmds/issues
 RoxygenNote: 7.3.2
