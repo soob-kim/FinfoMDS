@@ -8,7 +8,6 @@ Description: We present a self-supervised MDS approach informed by the dispersio
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports:
 Suggests: 
     testthat,
     knitr,
@@ -21,3 +20,5 @@ biocViews:
 URL: https://github.com/soob-kim/fmds
 BugReports: https://github.com/soob-kim/fmds/issues
 RoxygenNote: 7.3.2
+Depends: 
+    R (>= 3.5)

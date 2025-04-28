@@ -91,7 +91,7 @@ conf_obj <- function(y, z, D){
 #' z0 <- matrix(rnorm(100),ncol=2)
 #' mm_cmds(z0 = z0, D = d, y = y)
 
-mm_cmds <- function(nit = 100, lambda = 0.2, z0, D, y, z){
+mm_cmds <- function(nit = 100, lambda = 0.2, z0, D, y, z){ ## function name: fmds, vector-lower, matrix-upper
   N <- dim(z0)[1]
   S <- dim(z0)[2]
   a <- length(unique(y))
