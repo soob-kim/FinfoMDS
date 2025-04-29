@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(fmds)
+library(FinfoMDS)
 
-test_check("fmds")
+test_check("FinfoMDS")

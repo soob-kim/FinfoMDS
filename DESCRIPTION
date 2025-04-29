@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: c(
     person(given = "Soobin", family = "Kim", role = c("aut", "cre"),
            email = "sbbkim@ucdavis.edu"),
-    person(given = "Hyungseok", family = "Kim", role = c("aut", "cre"),
+    person(given = "Hyungseok", family = "Kim", role = "aut",
            email = "hskimm@mit.edu"))
 Description: We present a self-supervised MDS approach informed by the dispersions of observations that share a common binary label (F-ratio). Our visualization accurately configures the F-ratio while consistently preserving the global structure with a low data distortion compared to existing dimensionality reduction tools. Using an algal microbiome dataset, we show that this new method better illustrates the community's response to the host, suggesting its potential impact on microbiology and ecology data analysis.
 License: GPL-3
@@ -21,8 +21,8 @@ biocViews:
     DimensionReduction,
     MultidimensionalScaling,
     Visualization
-URL: https://github.com/soob-kim/fmds
-BugReports: https://github.com/soob-kim/fmds/issues
+URL: https://github.com/soob-kim/FinfoMDS
+BugReports: https://github.com/soob-kim/FinfoMDS/issues
 RoxygenNote: 7.3.2
 Depends: 
     R (>= 3.5)
