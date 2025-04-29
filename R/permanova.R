@@ -4,39 +4,43 @@
 #'
 #' @return A N by N matrix of indicators of equal treatment
 #' @export
-get_ind_mat <- function(y){
+#' @examples
+#' getIndMat(microbiome$host)
+getIndMat <- function(y){
     N <- length(y)
     mat <- matrix(0, nrow = N, ncol = N)
-    for(i in 1:N){
-        for(j in 1:(i-1)){
+    for(i in seq(1, N, by = 1)){
+        for(j in seq(1, N, by = 1)){
             mat[i,j] <- as.numeric(y[i]==y[j])
         }
     }
-    return(mat + t(mat))
+    return(mat)
 }
 
 
-#' Title Get pseudo-F value for PERMANOVA
+#' Get pseudo-F value for PERMANOVA
 #'
-#' @param mat Object matrix; used to build distance matrix d; d is prioritized
-#' @param trt Vector of treatments
-#' @param d Distance matrix; if NULL, obtain from mat using Euclidean distance
+#' @param z Object matrix; used to build distance matrix d; d is prioritized
+#' @param D Distance matrix; if NULL, obtain from mat using Euclidean distance
+#' @param y Vector of treatments
 #'
 #' @return pseudo-F value
 #' @export
-pseudo_F <- function(mat=NULL, trt, d = NULL){
-    if(is.null(d)){
-        d <- as.matrix(dist(mat))
+#' @examples
+#' pseudoF(D = microbiome$dist, y = microbiome$host)
+pseudoF <- function(z=NULL, D = NULL, y){
+    if(is.null(D)){
+        D <- as.matrix(dist(z))
     } else {
-        d <- as.matrix(d)
+        D <- as.matrix(D)
     }
-    N <- nrow(d)
-    a <- length(unique(trt))
+    N <- nrow(D)
+    a <- length(unique(y))
     n <- N/a
 
     SST <- SSW <- 0
-    SST <- sum(d * d) / 2
-    SSW <- sum(d * d * get_ind_mat(trt)) / 2
+    SST <- sum(D * D) / 2
+    SSW <- sum(D * D * getIndMat(y)) / 2
     SST <- SST / N
     SSW <- SSW / n
     SSA <- SST - SSW
@@ -46,35 +50,36 @@ pseudo_F <- function(mat=NULL, trt, d = NULL){
 
 #' Get p-value of PERMANOVA
 #'
-#' @param mat Object matrix; used to build distance matrix d; d is prioritized
-#' @param d Distance matrix; if NULL, obtain from mat using Euclidean distance
-#' @param trt Vector of treatments
+#' @param z Object matrix; used to build distance matrix d; d is prioritized
+#' @param D Distance matrix; if NULL, obtain from mat using Euclidean distance
+#' @param y Vector of treatments
 #' @param n_iter Number of iterations; defaults to 999
 #'
 #' @return list of ratio_all: vector of obtained pseudo-F values from permutations,
 #' ratio: pseudo-F value, p: p-value from PERMANOVA
 #' @export
-get_p <- function(mat=NULL, d=NULL, trt, n_iter=999){
+#' @examples
+#' getP(D = microbiome$dist, y = microbiome$host)
+getP <- function(z = NULL, D = NULL, y, n_iter = 999){
     # initialize
-    trt <- as.matrix(trt)
-    f_permuted <- matrix(0, nrow=n_iter, ncol=1)  # pseudo-F only
+    f_permuted <- matrix(0, nrow = n_iter, ncol = 1)  # pseudo-F only
     # iterate to get pseudo F
-    N <- length(trt)
-    a <- length(unique(trt))
-    tbl <- table(trt)
+    N <- length(y)
+    a <- length(unique(y))
+    tbl <- table(y)
     for (iter in 1:n_iter){
-        y_rand <- rep(1,N)
-        pool_v <- 1:N
-        for(cl in 2:a){
-            ind_rand <- sample(pool_v, tbl[cl], replace=F)
+        y_rand <- rep(1, N)
+        pool_v <- seq(1, N)
+        for(cl in seq(2, a)){
+            ind_rand <- sample(pool_v, tbl[cl], replace=FALSE)
             y_rand[ind_rand] <- cl
             pool_v <- setdiff(pool_v, ind_rand)
         }
-        f_permuted[iter,1] <- pseudo_F(mat=mat, d = d, trt = y_rand)
+        f_permuted[iter, 1] <- pseudoF(z = z, D = D, y = y_rand)
     }
     # compute p value
-    f_sorted <- sort(f_permuted[,1], decreasing = TRUE)
-    f_val <- pseudo_F(mat=mat, d = d, trt = trt)
+    f_sorted <- sort(f_permuted[, 1], decreasing = TRUE)
+    f_val <- pseudoF(z = z, D = D, y = y)
     p_val <- which(f_val > f_sorted)[1]
     p_val <- (p_val-1)/(n_iter+1)
 
