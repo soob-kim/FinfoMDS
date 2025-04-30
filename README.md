@@ -1,20 +1,13 @@
 
-# FMDS
-
-We present a self-supervised MDS approach informed by the dispersions of
-observations that share a common binary label ($F$-ratio). Our
-visualization accurately configures the F-ratio from PERMANOVA while
-consistently preserving the global structure with a low data distortion
-compared to existing dimensionality reduction tools. Using an algal
-microbiome dataset, we show that this new method better illustrates the
-community’s response to the host, suggesting its potential impact on
-microbiology and ecology data analysis.
+# FinfoMDS: Multidimensional scaling informed by _F_-statistic
 
 ## Installation
 
-You can install the released version from
-[github](https://github.com/soob-kim/fmds) with:
+While the package is now in preparation for submission to repository, you can install the released version from
+[github](https://github.com/soob-kim/FinfoMDS) with:
 
-    devtools::install_github("soob-kim/fmds")
+    devtools::install_github("soob-kim/FinfoMDS")
 
 ## Preprint
+
+H Kim*, S Kim*, JA Kimbrel, MM Morris, X Mayali and CR Buie, “Multidimensional scaling informed by _F_-statistic: Visualizing grouped microbiome data with inference,” arXiv ([preprint](https://arxiv.org/abs/2308.00354v2)).
