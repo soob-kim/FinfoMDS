@@ -2,7 +2,7 @@
 % Please edit documentation in R/permanova.R
 \name{pseudoF}
 \alias{pseudoF}
-\title{Get pseudo-F value for PERMANOVA}
+\title{Compute pseudo-F statistic for PERMANOVA}
 \usage{
 pseudoF(z = NULL, D = NULL, y)
 }
@@ -17,7 +17,7 @@ pseudoF(z = NULL, D = NULL, y)
 pseudo-F value
 }
 \description{
-Get pseudo-F value for PERMANOVA
+Compute pseudo-F statistic for PERMANOVA
 }
 \examples{
 pseudoF(D = microbiome$dist, y = microbiome$host)

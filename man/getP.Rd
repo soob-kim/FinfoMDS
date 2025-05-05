@@ -2,7 +2,7 @@
 % Please edit documentation in R/permanova.R
 \name{getP}
 \alias{getP}
-\title{Get p-value of PERMANOVA}
+\title{Compute p-value from PERMANOVA test}
 \usage{
 getP(z = NULL, D = NULL, y, n_iter = 999)
 }
@@ -20,7 +20,7 @@ list of ratio_all: vector of obtained pseudo-F values from permutations,
 ratio: pseudo-F value, p: p-value from PERMANOVA
 }
 \description{
-Get p-value of PERMANOVA
+Compute p-value from PERMANOVA test
 }
 \examples{
 getP(D = microbiome$dist, y = microbiome$host)

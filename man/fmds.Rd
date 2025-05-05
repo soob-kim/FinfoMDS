@@ -4,14 +4,16 @@
 \alias{fmds}
 \title{FMDS calculation using MM algorithm}
 \usage{
-fmds(nit = 100, lambda = 0.2, z0, D, y, z)
+fmds(nit = 100, lambda = 0.2, threshold = 0.01, z0 = NULL, D, y, z)
 }
 \arguments{
 \item{nit}{Number of iterations; 100 by default}
 
 \item{lambda}{Hyperparameter; 0.2 by default}
 
-\item{z0}{Initialization of configuration; Can use MDS output or random init.}
+\item{threshold}{Lower limit of p-value difference that allows iteration}
+
+\item{z0}{Initialization of configuration; NULL by default}
 
 \item{D}{Original distance matrix}
 
