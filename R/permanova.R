@@ -18,7 +18,7 @@ getIndMat <- function(y){
 }
 
 
-#' Get pseudo-F value for PERMANOVA
+#' Compute pseudo-F statistic for PERMANOVA
 #'
 #' @param z Object matrix; used to build distance matrix d; d is prioritized
 #' @param D Distance matrix; if NULL, obtain from mat using Euclidean distance
@@ -48,7 +48,7 @@ pseudoF <- function(z=NULL, D = NULL, y){
 }
 
 
-#' Get p-value of PERMANOVA
+#' Compute p-value from PERMANOVA test
 #'
 #' @param z Object matrix; used to build distance matrix d; d is prioritized
 #' @param D Distance matrix; if NULL, obtain from mat using Euclidean distance

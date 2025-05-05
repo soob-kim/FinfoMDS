@@ -1,10 +1,11 @@
 ---
-title: "Dimension Reduction for Visualization using FMDS"
-author: "Soobin Kim"
+title: "*FinfoMDS*: Multidimensional scaling informed by *F*-statistic"
+date: false
 output:
   BiocStyle::html_document:
     toc: true
     toc_depth: 2
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{vignette}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,26 +19,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(fmds)
-```
+# About this vignette {-}
+
+This vignette describes how to compute *F*-informed multidimensional scaling by implementing package `FinfoMDS`. A proposal and full description of this method can be found at: <https://arxiv.org/abs/2308.00354v2>. If you find this package useful, then please acknowledge the article in your work.
+
+Package `FinfoMDS` was prepared by Soobin Kim ([sbbkim\@ucdavis.edu](mailto:sbbkim@ucdavis.edu){.email}).
+
+Last updated on 05/05/2025.
 
 # Introduction
 
 Add an “Introduction” section that serves as an abstract to introduce the objective, models, unique functions, key points, etc that distinguish the package from other packages in the same area. This is a requirement of Bioconductor package vignettes. It should include a short motivation for the package in general as well as motivation for inclusion of the package in Biconductor. When relevant, a brief review and comparison of packages with similar functionality or scope should be provided either in the Introduction or in a separate dedicated vignette section.
 
-
 # Installation
+
 Add an “Installation” section that show to users how to download and load the package from Bioconductor.
 
 These instructions and any installations instructions should be in an eval=FALSE code chunk. Nowhere in the code ( code, man pages, vignettes, Rmd files) should someone try to install or download system dependencies, applications, packages, etc. Developers can provide instructions to follow in unevaluated code chunks, and should assume all necessary dependencies, applications or packages are already set up on a user’s system.
-
-
-
 
 # Session Info
 
 ```{r}
 sessionInfo()
 ```
-
