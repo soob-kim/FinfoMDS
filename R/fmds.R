@@ -56,7 +56,7 @@ mdsObj <- function(D, z){
 #' FMDS calculation using MM algorithm
 #'
 #' @param nit Number of iterations; 100 by default
-#' @param lambda Hyperparameter; 0.2 by default
+#' @param lambda Hyperparameter; 0.5 by default
 #' @param threshold Lower limit of p-value difference that allows iteration
 #' @param z0 Initialization of configuration; NULL by default
 #' @param D Original distance matrix
@@ -71,11 +71,7 @@ mdsObj <- function(D, z){
 #' set.seed(100)
 #' z0 <- cmdscale(d = microbiome$dist)
 #' fmds(z0 = z0, D = microbiome$dist, y = microbiome$host)
-fmds <- function(nit = 100, lambda = 0.2, threshold = 0.01, z0 = NULL, D, y, z){
-    N <- dim(z0)[1]
-    S <- dim(z0)[2]
-    a <- length(unique(y))
-    y_indmat <- getIndMat(y)
+fmds <- function(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, z){
     if(is.null(D)){
         D <- getDistMat(z)
     } else {
@@ -84,6 +80,10 @@ fmds <- function(nit = 100, lambda = 0.2, threshold = 0.01, z0 = NULL, D, y, z){
     if(is.null(z0)){
         z0 <- cmdscale(d = D)
     }
+    N <- dim(z0)[1]
+    S <- dim(z0)[2]
+    a <- length(unique(y))
+    y_indmat <- getIndMat(y)
     f_ratio <- pseudoF(z = z, D = D, y = y)
     z_temp <- z_up <- z0
     p0 <- getP(D = D, y = y)$p
