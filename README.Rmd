@@ -11,19 +11,49 @@ knitr::opts_chunk$set(
 )
 ```
 
-# FMDS
+# *FinfoMDS*: Multidimensional scaling informed by *F*-statistic
 
-We present a self-supervised MDS approach informed by the dispersions of observations that share a common binary label ($F$-ratio). Our visualization accurately configures the F-ratio from PERMANOVA while consistently preserving the global structure with a low data distortion compared to existing dimensionality reduction tools. Using an algal microbiome dataset, we show that this new method better illustrates the community's response to the host, suggesting its potential impact on microbiology and ecology data analysis.
+*F*-informed MDS (R package `FinfoMDS`) is a new multidimensional scaling-based ordination that configures data distribution based on the *F*-statistic (i.e., the ratio of dispersion between groups that share common and different labels). `FinfoMDS` is now being incorporated into Bioconductor packages. A preprint of the method and its full description can be found at:
 
+-   H Kim⋆, S Kim⋆, JA Kimbrel, MM Morris, X Mayali and CR Buie (2025). Multidimensional scaling informed by *F*-statistic: Visualizing grouped microbiome data with inference, *arXiv*. (<https://arxiv.org/abs/2308.00354v2>).
 
 ## Installation
 
-You can install the released version from 
-[github](https://github.com/soob-kim/fmds) with:
+### GitHub development version
 
-``` 
-devtools::install_github("soob-kim/fmds")
+A development version can be installed from [GitHub repository](https://github.com/soob-kim/fmds) by entering:
+
+```{r eval=FALSE}
+devtools::install_github("soob-kim/FinfoMDS")
 ```
 
-## Preprint
+### Bioconductor official release
 
+In the future, the official released version can be installed from Bioconductor by entering:
+
+```{r eval = FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+    
+BiocManager::install("FinfoMDS")
+```
+
+## Example
+
+Here we illustrate steps how you can use `FinfoMDS` and obtain 2D representation of your microbiome dataset. As an example, we take an algal-associated bacterial community (Kim et al., 2022). First, load the data by typing
+
+```{r eval = FALSE}
+data("microbiome", package = "FinfoMDS")
+```
+
+Next, compute the *F*-informed MDS by running:
+
+```{r eval = FALSE}
+result <- fmds(D=microbiome$dist, y=microbiome$host)
+```
+
+Next, compute the *F*-informed MDS by running
+
+-   `D`: Pairwise distance, matrix
+
+-   y: Label or group set, vector
