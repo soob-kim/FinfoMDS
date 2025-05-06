@@ -4,7 +4,7 @@
 \alias{fmds}
 \title{FMDS calculation using MM algorithm}
 \usage{
-fmds(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, z)
+fmds(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, X)
 }
 \arguments{
 \item{nit}{Number of iterations; 100 by default}
@@ -15,15 +15,14 @@ fmds(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, z)
 
 \item{z0}{Initialization of configuration; NULL by default}
 
-\item{D}{Original distance matrix}
+\item{D}{Square matrix of pairwise distance, size of N by N}
 
-\item{y}{Treatment vector}
+\item{y}{Vector of label or group set, size of N}
 
-\item{z}{Object matrix; used to build distance matrix d; d is prioritized}
+\item{X}{Object matrix; used to build distance matrix D; D is prioritized}
 }
 \value{
-list of z: obtained configuration,
-F_z: obtained pseuo-F value, F_0: original pseudo-F value
+2D representation vector, size of N by 2
 }
 \description{
 FMDS calculation using MM algorithm

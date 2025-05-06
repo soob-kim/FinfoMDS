@@ -59,21 +59,20 @@ mdsObj <- function(D, z){
 #' @param lambda Hyperparameter; 0.5 by default
 #' @param threshold Lower limit of p-value difference that allows iteration
 #' @param z0 Initialization of configuration; NULL by default
-#' @param D Original distance matrix
-#' @param y Treatment vector
-#' @param z Object matrix; used to build distance matrix d; d is prioritized
+#' @param D Square matrix of pairwise distance, size of N by N
+#' @param y Vector of label or group set, size of N
+#' @param X Object matrix; used to build distance matrix D; D is prioritized
 #'
-#' @return list of z: obtained configuration,
-#' F_z: obtained pseuo-F value, F_0: original pseudo-F value
+#' @return 2D representation vector, size of N by 2
 #' @importFrom stats dist
 #' @export
 #' @examples
 #' set.seed(100)
 #' z0 <- cmdscale(d = microbiome$dist)
 #' fmds(z0 = z0, D = microbiome$dist, y = microbiome$host)
-fmds <- function(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, z){
+fmds <- function(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, X){
     if(is.null(D)){
-        D <- getDistMat(z)
+        D <- getDistMat(X)
     } else {
         D <- as.matrix(D)
     }
@@ -84,7 +83,7 @@ fmds <- function(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, z){
     S <- dim(z0)[2]
     a <- length(unique(y))
     y_indmat <- getIndMat(y)
-    f_ratio <- pseudoF(z = z, D = D, y = y)
+    f_ratio <- pseudoF(z = X, D = D, y = y)
     z_temp <- z_up <- z0
     p0 <- getP(D = D, y = y)$p
     log_iter_mat <- matrix(0, nrow=0, ncol=6)
@@ -144,14 +143,9 @@ fmds <- function(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, z){
         } # end z_temp
 
         z_prev <- z_up
-        # obj_prev <- obj_up
         p_prev <- p_up
         z_up <- z_temp
     } # end iteration
 
-
-    Fz_up <- pseudoF(z = z_up, y = y)
-    F0 <- pseudoF(D = D, y = y)
-
-    return(list(z = z_up, F_z = Fz_up, F_0 = F0))
+    return(z_up)
 }

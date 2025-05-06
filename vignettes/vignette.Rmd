@@ -55,7 +55,27 @@ The package may be updated before any changes migrate to the official release. T
 devtools::install_github("soob-kim/FinfoMDS")
 ```
 
-# Example dataset
+# Example
+
+This section outlines steps for implementing `FinfoMDS` package to a microbiome dataset and how to obtain its 2D representation using *F*-informed MDS. Let's take an algal-associated bacterial community for example (Kim et al., 2022). First, load the example data by typing
+
+```{r eval = FALSE}
+data("microbiome", package = "FinfoMDS")
+```
+
+Next, compute the *F*-informed MDS by running:
+
+```{r eval = FALSE}
+result <- fmds(lambda = 0.3, D = microbiome$dist, y = microbiome$host)
+```
+
+.. where it will iterate until the 2D distributions converge or for 100 times by default—whichever occurs first. We have observed that setting `lambda` between 0.3 and 0.5 typically yields optimal results; however, the hyperparameter can be adjusted as long as it does not exceed 1.
+
+The 2D representation of the community dataset is returned as a matrix and can be viewed by typing:
+
+```{r eval = FALSE}
+plot(result, pch=microbiome$host)
+```
 
 # Reference
 

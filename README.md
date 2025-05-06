@@ -36,7 +36,7 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("FinfoMDS")
 ```
 
-## Example
+## Implementation
 
 We outline steps for users to implement `FinfoMDS` package to a
 microbiome dataset and obtain 2D representation of the microbiome. Let’s
@@ -50,16 +50,17 @@ data("microbiome", package = "FinfoMDS")
 Next, compute the *F*-informed MDS by running:
 
 ``` r
-result <- fmds(lambda = 0.5, D=microbiome$dist, y=microbiome$host)
+result <- fmds(lambda = 0.3, D = microbiome$dist, y = microbiome$host)
 ```
 
-.. where it will iterate for 100 times by default, or until the 2D
-distributions converge—whichever occurs first. While we have observed
-that setting `lambda = 0.5` typically yields optimal results, this
-hyperparameter can be adjusted as long as it does not exceed 1.
+.. where it will iterate until the 2D distributions converge or for 100
+times by default—whichever occurs first. While we have observed that
+setting `lambda` between 0.3 and 0.5 typically yields optimal results,
+this hyperparameter can be adjusted as long as it does not exceed 1.
 
-Next, compute the *F*-informed MDS by running
+Finally, the 2D representation of the community dataset is returned as a
+matrix `result` and can be viewed by typing:
 
-- `D`: Pairwise distance, matrix
-
-- y: Label or group set, vector
+``` r
+plot(result, pch=microbiome$host)
+```
