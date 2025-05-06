@@ -4,9 +4,13 @@ Title: Multidimensional Scaling with F-ratio for microbiome visualization
 Version: 0.1.0
 Authors@R: c(
     person(given = "Soobin", family = "Kim", role = c("aut", "cre"),
-           email = "sbbkim@ucdavis.edu"),
+           email = "soob.kim00@gmail.com"),
     person(given = "Hyungseok", family = "Kim", role = "aut",
-           email = "hskimm@mit.edu"))
+           email = "hskim0000@gmail.com"))
+Author: Soobin Kim [aut, cre],
+    Hyungseok Kim [aut], with
+    contributions from Xavier Mayali and Cullen Buie
+Maintainer: Soobin Kim <soob.kim00@gmail.com>
 Description: F-informed MDS is a new multidimensional scaling-based ordination method that configures data distribution based on the F-statistic (i.e., the ratio of dispersion between groups with shared or differing labels). 
 License: GPL-3
 Encoding: UTF-8
