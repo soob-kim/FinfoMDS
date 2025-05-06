@@ -1,13 +1,13 @@
 Package: FinfoMDS
 Type: Package
-Title: Self-supervised Multidimensional Scaling with F-ratio for microbiome visualization
+Title: Multidimensional Scaling with F-ratio for microbiome visualization
 Version: 0.1.0
 Authors@R: c(
     person(given = "Soobin", family = "Kim", role = c("aut", "cre"),
            email = "sbbkim@ucdavis.edu"),
     person(given = "Hyungseok", family = "Kim", role = "aut",
            email = "hskimm@mit.edu"))
-Description: We present a self-supervised MDS approach informed by the dispersions of observations that share a common binary label (F-ratio). Our visualization accurately configures the F-ratio while consistently preserving the global structure with a low data distortion compared to existing dimensionality reduction tools. Using an algal microbiome dataset, we show that this new method better illustrates the community's response to the host, suggesting its potential impact on microbiology and ecology data analysis.
+Description: F-informed MDS is a new multidimensional scaling-based ordination method that configures data distribution based on the F-statistic (i.e., the ratio of dispersion between groups with shared or differing labels). 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

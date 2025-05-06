@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-### GitHub development version
+### GitHub
 
 A development version can be installed from [GitHub repository](https://github.com/soob-kim/fmds) by entering:
 
@@ -27,7 +27,7 @@ A development version can be installed from [GitHub repository](https://github.c
 devtools::install_github("soob-kim/FinfoMDS")
 ```
 
-### Bioconductor official release
+### Bioconductor
 
 In the future, the official released version can be installed from Bioconductor by entering:
 
@@ -40,7 +40,7 @@ BiocManager::install("FinfoMDS")
 
 ## Example
 
-Here we illustrate steps how you can use `FinfoMDS` and obtain 2D representation of your microbiome dataset. As an example, let's take an algal-associated bacterial community (Kim et al., 2022). First, load the data by typing
+We outline steps for users to implement `FinfoMDS` package to a microbiome dataset and obtain 2D representation of the microbiome. Let's take an algal-associated bacterial community for example (Kim et al., 2022). First, load the data by typing
 
 ```{r eval = FALSE}
 data("microbiome", package = "FinfoMDS")
@@ -49,10 +49,10 @@ data("microbiome", package = "FinfoMDS")
 Next, compute the *F*-informed MDS by running:
 
 ```{r eval = FALSE}
-result <- fmds(lambda = 0.5, D=microbiome$dist, y=microbiome$host)
+result <- fmds(lambda = 0.3, D=microbiome$dist, y=microbiome$host)
 ```
 
-.. where it will iterate for 100 times by default, or until the 2D distributions converge—whichever occurs first. While we have observed that setting `lambda = 0.5` typically yields optimal results, this hyperparameter can be adjusted as long as it does not exceed 1.
+.. where it will iterate for 100 times by default, or until the 2D distributions converge—whichever occurs first. While we have observed that setting `lambda` between 0.3 and 0.5 typically yields optimal results, this hyperparameter can be adjusted as long as it does not exceed 1.
 
 Next, compute the *F*-informed MDS by running
 

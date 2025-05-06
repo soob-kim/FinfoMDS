@@ -15,7 +15,7 @@ the method in full is available at:
 
 ## Installation
 
-### GitHub development version
+### GitHub
 
 A development version can be installed from [GitHub
 repository](https://github.com/soob-kim/fmds) by entering:
@@ -24,7 +24,7 @@ repository](https://github.com/soob-kim/fmds) by entering:
 devtools::install_github("soob-kim/FinfoMDS")
 ```
 
-### Bioconductor official release
+### Bioconductor
 
 In the future, the official released version can be installed from
 Bioconductor by entering:
@@ -38,10 +38,10 @@ BiocManager::install("FinfoMDS")
 
 ## Example
 
-Here we illustrate steps how you can use `FinfoMDS` and obtain 2D
-representation of your microbiome dataset. As an example, we take an
-algal-associated bacterial community (Kim et al., 2022). First, load the
-data by typing
+We outline steps for users to implement `FinfoMDS` package to a
+microbiome dataset and obtain 2D representation of the microbiome. Let’s
+take an algal-associated bacterial community for example (Kim et al.,
+2022). First, load the data by typing
 
 ``` r
 data("microbiome", package = "FinfoMDS")
