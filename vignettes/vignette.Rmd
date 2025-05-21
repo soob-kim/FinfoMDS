@@ -33,8 +33,6 @@ Multidimensional scaling (MDS) is a dimensionality reduction technique used in m
 
 Here, we introduce a new MDS-based ordination, ***F*****-informed MDS** (implemented in the R package `FinfoMDS`), which configures data distribution based on the *F*-statistic, the ratio of dispersion between groups that share common and different labels. Our approach offers a well-founded refinement of MDS that aligns with statistical test results, which can be beneficial for broader compositional data analyses in microbiology and ecology.
 
-To enhance its accessibility and integration into standard microbiome workflows, `FinfoMDS` is incorporated into Bioconductor packages.
-
 # Installation
 
 ## Bioconductor official release
