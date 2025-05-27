@@ -6,8 +6,10 @@
 .httr-oauth
 .DS_Store
 .quarto
-.Rproj
+*.Rproj
 .pdf
 .PDF
 .txt
+*BiocCheck.log
 inst/doc
+

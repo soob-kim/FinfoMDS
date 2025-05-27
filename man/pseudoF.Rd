@@ -20,5 +20,9 @@ pseudo-F value
 Compute pseudo-F statistic for PERMANOVA
 }
 \examples{
-pseudoF(D = microbiome$dist, y = microbiome$host)
+require(phyloseq)
+data(microbiome)
+D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+y <- microbiome@sam_data@.Data[[1]]
+pseudoF(D = D, y = y)
 }

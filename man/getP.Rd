@@ -23,5 +23,9 @@ ratio: pseudo-F value, p: p-value from PERMANOVA
 Compute p-value from PERMANOVA test
 }
 \examples{
-getP(D = microbiome$dist, y = microbiome$host)
+require(phyloseq)
+data(microbiome)
+D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+y <- microbiome@sam_data@.Data[[1]]
+getP(D = D, y = y)
 }

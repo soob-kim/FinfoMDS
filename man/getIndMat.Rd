@@ -16,5 +16,8 @@ A N by N matrix of indicators of equal treatment
 Get index matrix
 }
 \examples{
-getIndMat(microbiome$host)
+require(phyloseq)
+data(microbiome)
+y <- microbiome@sam_data@.Data[[1]]
+getIndMat(y)
 }

@@ -5,11 +5,7 @@
 \alias{microbiome}
 \title{Microbiome dataset}
 \format{
-A list of length 2. Each element corresponds to:
-\describe{
-  \item{dist}{A numeric matrix representing pairwise weighted Unifrac distances between samples at the site.}
-  \item{host}{A character vector indicating the presence ("+") or absence ("-") of the host for each sample.}
-}
+A phyloseq-class object.
 }
 \source{
 Data derived from an experimental study on host-microbe interactions.
@@ -18,7 +14,7 @@ Data derived from an experimental study on host-microbe interactions.
 data(microbiome)
 }
 \description{
-The dataset consists of 36 balanced microbial community samples cultured with or without the microbial host (alga Phaeodactylum tricornutum). The community comprised 72 bacterial taxa as identified by amplicon sequence variants (ASV) of the 16S rRNA gene, PCR-amplified. ASV counts were obtained through Illumina MiSeq system and subsequently converted into relative abundances using cumulative sum scaling (CSS). A phylogeny-based metric (weighted Unifrac) and compositional data were used to calculate distance matrix.
+A phyloseq-class object representing an example microbial community dataset. The dataset consists of 36 microbiome samples, half of which were co-cultured with their diatom host (Phaeodactylum tricornutum). Each microbiome comprises 72 bacterial taxa identified by amplicon sequence variants (ASVs) of the 16S rRNA gene. ASV counts represent relative abundances after applying the cumulative sum scaling (CSS) method.
 }
 \references{
 Kim H., Kimbrel J.A., Vaiana C.A., Wollard J.R., Mayali X., Buie C.R. (2022).

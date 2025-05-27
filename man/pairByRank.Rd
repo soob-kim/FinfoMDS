@@ -21,6 +21,10 @@ pseudo-F values matrix
 Get p-value matrix
 }
 \examples{
-z <- cmdscale(d = microbiome$dist)
-pairByRank(z = z, D = microbiome$dist, y = microbiome$host)
+require(phyloseq)
+data(microbiome)
+D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+y <- microbiome@sam_data@.Data[[1]]
+z0 <- cmdscale(d = D)
+pairByRank(z = z0, D = D, y = y)
 }

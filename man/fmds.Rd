@@ -4,14 +4,14 @@
 \alias{fmds}
 \title{FMDS calculation using MM algorithm}
 \usage{
-fmds(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, X)
+fmds(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X)
 }
 \arguments{
 \item{nit}{Number of iterations; 100 by default}
 
 \item{lambda}{Hyperparameter; 0.5 by default}
 
-\item{threshold}{Lower limit of p-value difference that allows iteration}
+\item{threshold_p}{Lower limit of p-value difference that allows iteration}
 
 \item{z0}{Initialization of configuration; NULL by default}
 
@@ -29,6 +29,10 @@ FMDS calculation using MM algorithm
 }
 \examples{
 set.seed(100)
-z0 <- cmdscale(d = microbiome$dist)
-fmds(z0 = z0, D = microbiome$dist, y = microbiome$host)
+require(phyloseq)
+data(microbiome)
+D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+y <- microbiome@sam_data@.Data[[1]]
+z0 <- cmdscale(d = D)
+fmds(z0 = z0, D = D, y = y)
 }

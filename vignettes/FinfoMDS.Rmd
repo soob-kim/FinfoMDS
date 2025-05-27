@@ -58,12 +58,14 @@ devtools::install_github("soob-kim/FinfoMDS")
 This section outlines the steps for implementing the `FinfoMDS` package on a microbiome dataset and obtaining its 2D representation using *F*-informed MDS. As an example, let's use an algal-associated bacterial community (Kim et al., 2022). First, load a `phyloseq`-class object by typing:
 
 ```{r eval = TRUE}
+library(FinfoMDS)
 data("microbiome", package = "FinfoMDS")
 ```
 
 Next, compute the weighted UniFrac distance from this dataset and obtain its label set:
 
 ```{r eval = TRUE}
+require(phyloseq)
 D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
 y <- microbiome@sam_data@.Data[[1]]
 ```

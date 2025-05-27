@@ -5,7 +5,10 @@
 #' @return A N by N matrix of indicators of equal treatment
 #' @export
 #' @examples
-#' getIndMat(microbiome$host)
+#' require(phyloseq)
+#' data(microbiome)
+#' y <- microbiome@sam_data@.Data[[1]]
+#' getIndMat(y)
 getIndMat <- function(y){
     N <- length(y)
     mat <- matrix(0, nrow = N, ncol = N)
@@ -27,7 +30,11 @@ getIndMat <- function(y){
 #' @return pseudo-F value
 #' @export
 #' @examples
-#' pseudoF(D = microbiome$dist, y = microbiome$host)
+#' require(phyloseq)
+#' data(microbiome)
+#' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+#' y <- microbiome@sam_data@.Data[[1]]
+#' pseudoF(D = D, y = y)
 pseudoF <- function(z=NULL, D = NULL, y){
     if(is.null(D)){
         D <- as.matrix(dist(z))
@@ -59,7 +66,11 @@ pseudoF <- function(z=NULL, D = NULL, y){
 #' ratio: pseudo-F value, p: p-value from PERMANOVA
 #' @export
 #' @examples
-#' getP(D = microbiome$dist, y = microbiome$host)
+#' require(phyloseq)
+#' data(microbiome)
+#' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+#' y <- microbiome@sam_data@.Data[[1]]
+#' getP(D = D, y = y)
 getP <- function(z = NULL, D = NULL, y, n_iter = 999){
     # initialize
     f_permuted <- matrix(0, nrow = n_iter, ncol = 1)  # pseudo-F only
@@ -67,7 +78,7 @@ getP <- function(z = NULL, D = NULL, y, n_iter = 999){
     N <- length(y)
     a <- length(unique(y))
     tbl <- table(y)
-    for (iter in 1:n_iter){
+    for (iter in seq(1, n_iter)){
         y_rand <- rep(1, N)
         pool_v <- seq(1, N)
         for(cl in seq(2, a)){

@@ -24,10 +24,15 @@ getDistMat <- function(z){
 #'
 #' @return pseudo-F values matrix
 #' 1st col of original data, 2nd col of reduced dim
+#' @importFrom stats cmdscale
 #' @export
 #' @examples
-#' z <- cmdscale(d = microbiome$dist)
-#' pairByRank(z = z, D = microbiome$dist, y = microbiome$host)
+#' require(phyloseq)
+#' data(microbiome)
+#' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+#' y <- microbiome@sam_data@.Data[[1]]
+#' z0 <- cmdscale(d = D)
+#' pairByRank(z = z0, D = D, y = y)
 pairByRank <- function(z, D, y){
     f0_sorted <- getP(D = D, y = y)$ratio_all
     fz_sorted <- getP(z = z, y = y)$ratio_all
@@ -42,10 +47,15 @@ pairByRank <- function(z, D, y){
 #' @param z Lower dimension representation
 #'
 #' @return Scalar of objective function value of MDS
+#' @importFrom stats cmdscale
 #' @export
 #' @examples
-#' z <- cmdscale(d = microbiome$dist)
-#' mdsObj(D = microbiome$dist, z = z)
+#' require(phyloseq)
+#' data(microbiome)
+#' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+#' y <- microbiome@sam_data@.Data[[1]]
+#' z0 <- cmdscale(d = D)
+#' mdsObj(D = D, z = z0)
 mdsObj <- function(D, z){
     z_distmat <- getDistMat(z)
     return(sum((D - z_distmat)^2)/2)
@@ -65,11 +75,16 @@ mdsObj <- function(D, z){
 #'
 #' @return 2D representation vector, size of N by 2
 #' @importFrom stats dist
+#' @importFrom stats cmdscale
 #' @export
 #' @examples
 #' set.seed(100)
-#' z0 <- cmdscale(d = microbiome$dist)
-#' fmds(z0 = z0, D = microbiome$dist, y = microbiome$host)
+#' require(phyloseq)
+#' data(microbiome)
+#' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+#' y <- microbiome@sam_data@.Data[[1]]
+#' z0 <- cmdscale(d = D)
+#' fmds(z0 = z0, D = D, y = y)
 fmds <- function(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X){
     if(is.null(D)){
         D <- getDistMat(X)
@@ -91,7 +106,7 @@ fmds <- function(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X
         c('epoch', 'obj', 'obj_mds', 'obj_confr', 'p_z', 'p_0')
     # obj_prev <- 0
     p_prev <- 1
-    for(t in 0:nit){
+    for(t in seq(0, nit)){
         p_up <- getP(z = z_up, y = y)$p
 
         if((abs(p_up-p0) >= abs(p_prev-p0)) & (abs(p_prev-p0)<=threshold_p)){
@@ -128,7 +143,7 @@ fmds <- function(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X
                               c(t, obj, obj_mds, obj_conf, p_up, p0))
 
 
-        for(i in 1:N){
+        for(i in seq(1, N)){
             z_distmat <- as.matrix(dist(z_up))  # (N,N)
             coeff <- D/z_distmat  # final term in the update
             coeff[is.nan(coeff)] <- 0

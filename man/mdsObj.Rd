@@ -18,6 +18,10 @@ Scalar of objective function value of MDS
 Objective term of MDS
 }
 \examples{
-z <- cmdscale(d = microbiome$dist)
-mdsObj(D = microbiome$dist, z = z)
+require(phyloseq)
+data(microbiome)
+D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+y <- microbiome@sam_data@.Data[[1]]
+z0 <- cmdscale(d = D)
+mdsObj(D = D, z = z0)
 }
