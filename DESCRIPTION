@@ -7,7 +7,9 @@ Authors@R: c(
            email = "soob.kim00@gmail.com"),
     person(given = "Hyungseok", family = "Kim", role = "aut",
            email = "hskim0000@gmail.com"))
-Description: F-informed MDS is a new multidimensional scaling-based ordination method that configures data distribution based on the F-statistic (i.e., the ratio of dispersion between groups with shared or differing labels). 
+Description: F-informed MDS is a new multidimensional scaling-based ordination 
+    method that configures data distribution based on the F-statistic (i.e., the 
+    ratio of dispersion between groups with shared or differing labels). 
 License: GPL-3
 Encoding: UTF-8
 Suggests: 
@@ -24,6 +26,8 @@ biocViews:
 URL: https://github.com/soob-kim/FinfoMDS
 BugReports: https://github.com/soob-kim/FinfoMDS/issues
 RoxygenNote: 7.3.2
+Imports:
+    phyloseq
 Depends: 
     R (>= 3.5)
 Config/testthat/edition: 3

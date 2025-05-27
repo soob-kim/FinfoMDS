@@ -55,24 +55,31 @@ devtools::install_github("soob-kim/FinfoMDS")
 
 # Example
 
-This section outlines steps for implementing `FinfoMDS` package to a microbiome dataset and how to obtain its 2D representation using *F*-informed MDS. Let's take an algal-associated bacterial community for example (Kim et al., 2022). First, load the example data by typing
+This section outlines the steps for implementing the `FinfoMDS` package on a microbiome dataset and obtaining its 2D representation using *F*-informed MDS. As an example, let's use an algal-associated bacterial community (Kim et al., 2022). First, load a `phyloseq`-class object by typing:
 
-```{r eval = FALSE}
+```{r eval = TRUE}
 data("microbiome", package = "FinfoMDS")
 ```
 
-Next, compute the *F*-informed MDS by running:
+Next, compute the weighted UniFrac distance from this dataset and obtain its label set:
 
-```{r eval = FALSE}
-result <- fmds(lambda = 0.3, D = microbiome$dist, y = microbiome$host)
+```{r eval = TRUE}
+D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+y <- microbiome@sam_data@.Data[[1]]
 ```
 
-.. where it will iterate until the 2D distributions converge or for 100 times by default—whichever occurs first. We have observed that setting `lambda` between 0.3 and 0.5 typically yields optimal results; however, the hyperparameter can be adjusted as long as it does not exceed 1.
+Then, compute the *F*-informed MDS by running:
 
-The 2D representation of the community dataset is returned as a matrix and can be viewed by typing:
+```{r eval = TRUE}
+result <- fmds(lambda = 0.3, threshold_p = 0.05, D = D, y = y)
+```
 
-```{r eval = FALSE}
-plot(result, pch=microbiome$host)
+This procedure will iterate until the 2D distributions converge, as long as the *p*-value does not deviate by more than `threshold_p`, or until reaching the default maximum of 100 iterations, whichever occurs first. We have observed that setting lambda between 0.3 and 0.5 typically yields optimal results; however, this hyperparameter can be adjusted as long as it does not exceed 1.
+
+The 2D representation of the community dataset is returned as a matrix and can be visualized by typing:
+
+```{r eval = TRUE}
+plot(result, pch = y)
 ```
 
 # Reference

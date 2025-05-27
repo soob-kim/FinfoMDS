@@ -57,7 +57,7 @@ mdsObj <- function(D, z){
 #'
 #' @param nit Number of iterations; 100 by default
 #' @param lambda Hyperparameter; 0.5 by default
-#' @param threshold Lower limit of p-value difference that allows iteration
+#' @param threshold_p Lower limit of p-value difference that allows iteration
 #' @param z0 Initialization of configuration; NULL by default
 #' @param D Square matrix of pairwise distance, size of N by N
 #' @param y Vector of label or group set, size of N
@@ -70,7 +70,7 @@ mdsObj <- function(D, z){
 #' set.seed(100)
 #' z0 <- cmdscale(d = microbiome$dist)
 #' fmds(z0 = z0, D = microbiome$dist, y = microbiome$host)
-fmds <- function(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, X){
+fmds <- function(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X){
     if(is.null(D)){
         D <- getDistMat(X)
     } else {
@@ -94,7 +94,7 @@ fmds <- function(nit = 100, lambda = 0.5, threshold = 0.01, z0 = NULL, D, y, X){
     for(t in 0:nit){
         p_up <- getP(z = z_up, y = y)$p
 
-        if((abs(p_up-p0) >= abs(p_prev-p0)) & (abs(p_prev-p0)<=threshold)){
+        if((abs(p_up-p0) >= abs(p_prev-p0)) & (abs(p_prev-p0)<=threshold_p)){
             print(sprintf('Lambda %.2f ...halt iteration', lambda))
             z_up <- z_prev # revert to prev
             break

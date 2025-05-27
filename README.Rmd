@@ -46,15 +46,22 @@ We outline steps for users to implement `FinfoMDS` package to a microbiome datas
 data("microbiome", package = "FinfoMDS")
 ```
 
-Next, compute the *F*-informed MDS by running:
+Next, compute the weighted UniFrac distance from this dataset and obtain its label set:
 
 ```{r eval = FALSE}
-result <- fmds(lambda = 0.3, D = microbiome$dist, y = microbiome$host)
+D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
+y <- microbiome@sam_data@.Data[[1]]
 ```
 
-.. where it will iterate until the 2D distributions converge or for 100 times by default—whichever occurs first. While we have observed that setting `lambda` between 0.3 and 0.5 typically yields optimal results, this hyperparameter can be adjusted as long as it does not exceed 1.
+Then, compute the *F*-informed MDS by running:
 
-Finally, the 2D representation of the community dataset is returned as a matrix `result` and can be viewed by typing:
+```{r eval = FALSE}
+result <- fmds(lambda = 0.3, threshold_p = 0.05, D = D, y = y)
+```
+
+This procedure will iterate until the 2D distributions converge, as long as the *p*-value does not deviate by more than `threshold_p`, or until reaching the default maximum of 100 iterations, whichever occurs first. While lambda between 0.3 and 0.5 has typically yielded optimal results, it can be adjusted as long as it does not exceed 1.
+
+The 2D representation of the community dataset is returned as a matrix and can be visualized by typing:
 
 ```{r eval = FALSE}
 plot(result, pch=microbiome$host)
