@@ -21,11 +21,11 @@ knitr::opts_chunk$set(
 
 # About this vignette {.unnumbered}
 
-This vignette describes how to compute the *F*-informed multidimensional scaling using the `FinfoMDS` package. `FinfoMDS` was developed by Soobin Kim ([sbbkim\@ucdavis.edu](mailto:sbbkim@ucdavis.edu){.email}). A proposal of the method and its full description can be found at:
+This vignette describes how to perform *F*-informed multidimensional scaling using the `FinfoMDS` package. `FinfoMDS` was developed by Soobin Kim ([sbbkim\@ucdavis.edu](mailto:sbbkim@ucdavis.edu){.email}). A proposal of the method and its full description can be found at:
 
 -   H Kim⋆, S Kim⋆, JA Kimbrel, MM Morris, X Mayali and CR Buie (2025). Multidimensional scaling informed by *F*-statistic: Visualizing grouped microbiome data with inference, *arXiv* (<https://arxiv.org/abs/2308.00354v2>).
 
-The vignette was last updated in May 2025.
+This vignette was updated in August 2025.
 
 # Introduction
 
@@ -37,25 +37,33 @@ Here, we introduce a new MDS-based ordination, ***F*****-informed MDS** (impleme
 
 ## Bioconductor official release
 
-To install an official release version of this package, start R (version "4.5") and enter:
+To install the official release version of this package, start R (version "4.5") and enter:
 
 ```{r eval=FALSE}
 BiocManager::install("FinfoMDS")
 ```
 
-For older versions of R, please refer to the appropriate Bioconductor release.
+For older R versions, please refer to the appropriate Bioconductor release.
 
 ## GitHub development version
 
-The package may be updated before any changes migrate to the official release. The development version can be installed by entering:
+The package may be updated before changes are migrated to the official release. To install the development version, enter:
 
 ```{r eval=FALSE}
 devtools::install_github("soob-kim/FinfoMDS")
 ```
 
+# Operation
+
+As introduced earlier, *F*-informed MDS is a microbiome data visualization tool designed to display statistical significance. The visualization (a 2D representation) output is obtained by iterating an optimization algorithm at each epoch. The procedure is summarized in the diagram below and is implemented in the `fmds()` function.
+
+![](FlowDiagram.png)
+
+For `fmds()` function to operate, the following arguments are required: 1) labels `y`, 2) either a distance matrix `D` or a design matrix `X` (if both are provided, `D` takes precedence). Additionally, the following optional arguments can be adjusted according to user preference: 1) hyperparameter `lambda`, 2) initial representation `z0`, 3) maximum epoch number `nit`, and 4) stopping criterion `threshold_p`. Upon completion, `fmds()` returns a two-column matrix containing the coordinates representing the distance matrix `D`.
+
 # Example
 
-This section outlines the steps for implementing the `FinfoMDS` package on a microbiome dataset and obtaining its 2D representation using *F*-informed MDS. As an example, let's use an algal-associated bacterial community (Kim et al., 2022). First, load a `phyloseq`-class object by typing:
+As an example, we use an algal-associated bacterial community (Kim et al., 2022). First, load a `phyloseq`-class object by typing:
 
 ```{r eval = TRUE}
 library(FinfoMDS)
@@ -67,16 +75,16 @@ Next, compute the weighted UniFrac distance from this dataset and obtain its lab
 ```{r eval = TRUE}
 require(phyloseq)
 D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-y <- microbiome@sam_data@.Data[[1]]
+y <- sample_data(microbiome)$Treatment
 ```
 
 Then, compute the *F*-informed MDS by running:
 
 ```{r eval = TRUE}
-result <- fmds(lambda = 0.3, threshold_p = 0.05, D = D, y = y)
+result <- fmds(D = D, y = y, lambda = 0.3, threshold_p = 0.05)
 ```
 
-This procedure will iterate until the 2D distributions converge, as long as the *p*-value does not deviate by more than `threshold_p`, or until reaching the default maximum of 100 iterations, whichever occurs first. We have observed that setting lambda between 0.3 and 0.5 typically yields optimal results; however, this hyperparameter can be adjusted as long as it does not exceed 1.
+This procedure will iterate until the 2D distributions converge, as long as the *p*-value does not deviate more than `threshold_p`, or until reaching the default maximum of 100 iterations, whichever occurs first. We have observed that setting lambda between 0.3 and 0.5 typically yields optimal results; however, this hyperparameter can be adjusted as long as it does not exceed 1.
 
 The 2D representation of the community dataset is returned as a matrix and can be visualized by typing:
 

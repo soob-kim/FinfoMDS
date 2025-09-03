@@ -1,12 +1,13 @@
 
 # *FinfoMDS*: Multidimensional scaling informed by *F*-statistic
 
-*F*-informed MDS is a new multidimensional scaling-based ordination
-method that configures data distribution based on the *F*-statistic
-(i.e., the ratio of dispersion between groups with shared or differing
-labels). An R package, `FinfoMDS`, for computing the *F*-informed MDS is
-currently being incorporated into Bioconductor. A preprint describing
-the method in full is available at:
+*F*-informed MDS is a new multidimensional scaling method that
+configures data distribution based on the *F*-statistic (i.e., the ratio
+of dispersion between groups with shared or differing labels). An R
+package, `FinfoMDS`, for computing the *F*-informed MDS is currently
+under review at Bioconductor
+([link](https://github.com/Bioconductor/Contributions/issues/3811)). A
+preprint describing the method in full is available at:
 
 - H Kim⋆, S Kim⋆, JA Kimbrel, MM Morris, X Mayali and CR Buie (2025).
   Multidimensional scaling informed by *F*-statistic: Visualizing
@@ -40,8 +41,9 @@ BiocManager::install("FinfoMDS")
 
 We outline steps for users to implement `FinfoMDS` package to a
 microbiome dataset and obtain 2D representation of the microbiome. Let’s
-take an algal-associated bacterial community for example (Kim et al.,
-2022). First, load the data by typing
+take an algal-associated bacterial community for example ([Kim et al.,
+2022](https://doi.org/10.1038/s41396-021-01147-x)). First, load the data
+by typing
 
 ``` r
 data("microbiome", package = "FinfoMDS")
@@ -52,13 +54,13 @@ its label set:
 
 ``` r
 D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-y <- microbiome@sam_data@.Data[[1]]
+y <- sample_data(microbiome)$Treatment
 ```
 
 Then, compute the *F*-informed MDS by running:
 
 ``` r
-result <- fmds(lambda = 0.3, threshold_p = 0.05, D = D, y = y)
+result <- fmds(D = D, y = y, lambda = 0.3, threshold_p = 0.05)
 ```
 
 This procedure will iterate until the 2D distributions converge, as long
@@ -67,8 +69,8 @@ reaching the default maximum of 100 iterations, whichever occurs first.
 While lambda between 0.3 and 0.5 has typically yielded optimal results,
 it can be adjusted as long as it does not exceed 1.
 
-The 2D representation of the community dataset is returned as a matrix
-and can be visualized by typing:
+The `fmds()` function returns a two-column matrix representing the
+community dataset, which can be visualized by typing:
 
 ``` r
 plot(result, pch=microbiome$host)

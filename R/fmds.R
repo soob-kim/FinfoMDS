@@ -11,7 +11,7 @@
 #' matrix(rnorm(100, 2), ncol=4))
 #' getDistMat(z)
 getDistMat <- function(z){
-    z_dist <- as.matrix(dist(z))
+    z_dist <- as.matrix(dist(z)) # L2 distance
     return(z_dist)
 }
 
@@ -25,12 +25,13 @@ getDistMat <- function(z){
 #' @return pseudo-F values matrix
 #' 1st col of original data, 2nd col of reduced dim
 #' @importFrom stats cmdscale
+#' @importFrom phyloseq distance sample_data
 #' @export
 #' @examples
 #' require(phyloseq)
 #' data(microbiome)
 #' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-#' y <- microbiome@sam_data@.Data[[1]]
+#' y <- sample_data(microbiome)$Treatment
 #' z0 <- cmdscale(d = D)
 #' pairByRank(z = z0, D = D, y = y)
 pairByRank <- function(z, D, y){
@@ -47,45 +48,46 @@ pairByRank <- function(z, D, y){
 #' @param z Lower dimension representation
 #'
 #' @return Scalar of objective function value of MDS
-#' @importFrom stats cmdscale
+#' @importFrom stats dist cmdscale
+#' @importFrom phyloseq distance
 #' @export
 #' @examples
 #' require(phyloseq)
 #' data(microbiome)
 #' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-#' y <- microbiome@sam_data@.Data[[1]]
 #' z0 <- cmdscale(d = D)
 #' mdsObj(D = D, z = z0)
 mdsObj <- function(D, z){
     z_distmat <- getDistMat(z)
-    return(sum((D - z_distmat)^2)/2)
+    return(sum((D - z_distmat)^2) / N)
 }
 
 
 
 #' FMDS calculation using MM algorithm
 #'
+#' @param D Square matrix of pairwise distance, size of N by N
+#' @param y Vector of label or group set, size of N
+#' @param X Object matrix; used to build distance matrix D; D is prioritized
 #' @param nit Number of iterations; 100 by default
 #' @param lambda Hyperparameter; 0.5 by default
 #' @param threshold_p Lower limit of p-value difference that allows iteration
 #' @param z0 Initialization of configuration; NULL by default
-#' @param D Square matrix of pairwise distance, size of N by N
-#' @param y Vector of label or group set, size of N
-#' @param X Object matrix; used to build distance matrix D; D is prioritized
 #'
 #' @return 2D representation vector, size of N by 2
 #' @importFrom stats dist
 #' @importFrom stats cmdscale
+#' @importFrom phyloseq distance sample_data
 #' @export
 #' @examples
 #' set.seed(100)
 #' require(phyloseq)
 #' data(microbiome)
 #' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-#' y <- microbiome@sam_data@.Data[[1]]
+#' y <- sample_data(microbiome)$Treatment
 #' z0 <- cmdscale(d = D)
 #' fmds(z0 = z0, D = D, y = y)
-fmds <- function(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X){
+fmds <- function(D, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL){
     if(is.null(D)){
         D <- getDistMat(X)
     } else {
@@ -104,25 +106,20 @@ fmds <- function(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X
     log_iter_mat <- matrix(0, nrow=0, ncol=6)
     colnames(log_iter_mat) <-
         c('epoch', 'obj', 'obj_mds', 'obj_confr', 'p_z', 'p_0')
-    # obj_prev <- 0
     p_prev <- 1
     for(t in seq(0, nit)){
         p_up <- getP(z = z_up, y = y)$p
 
-        if((abs(p_up-p0) >= abs(p_prev-p0)) & (abs(p_prev-p0)<=threshold_p)){
-            print(sprintf('Lambda %.2f ...halt iteration', lambda))
+        if((abs(p_up-p0) >= abs(p_prev-p0)) & (abs(p_prev-p0) <= threshold_p)){
+            message(sprintf('Lambda %.2f ...halt iteration', lambda))
             z_up <- z_prev # revert to prev
             break
         }
 
-        if(lambda==0){
-            f_ratio_pred <- f_ratio
-        } else {
-            list_pair <- pairByRank(D = D, z = z_up, y = y) # _0, _z
-            ind_f_ratio <- which.min(abs(f_ratio - list_pair[,1]))[1]
-            f_ratio_pred <- list_pair[,2][ind_f_ratio]
-        }
-
+        list_pair <- pairByRank(D = D, z = z_up, y = y) # _0, _z
+        ind_f_ratio <- which.min(abs(f_ratio - list_pair[,1]))[1]
+        f_ratio_pred <- list_pair[,2][ind_f_ratio]
+        
         z_distmat <- as.matrix(dist(z_up))
         f_diff_nominator <- sum((1 - a * y_indmat * (1+f_ratio_pred*(a-1)/(N-a))) *
                                     z_distmat^2)
@@ -131,7 +128,7 @@ fmds <- function(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X
         obj_mds <- mdsObj(D, z_up)
         obj <- lambda*obj_conf + obj_mds
 
-        print(paste('epoch', t,
+        message(paste('epoch', t,
                     '  lambda', lambda,
                     '  total', sprintf(obj, fmt = '%#.2f'),
                     '  mds', sprintf(obj_mds, fmt = '%#.2f'),
@@ -150,11 +147,11 @@ fmds <- function(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X
             z_diff <- -sweep(x=z_up, MARGIN=2, STATS=as.matrix(z_up[i,]), FUN="-")
 
             z_temp[i,] <- (1+lambda*delta) * (apply(z_up[y!=y[i],], 2, sum)) +
-                (1-lambda*delta*(1+2*f_ratio_pred/(N-2))) *
+                (1 - lambda * delta * (a-1 + f_ratio_pred*(a-1)/(N-2))) *
                 (apply(z_up[y==y[i],], 2, sum)) +
                 apply(sweep(x=z_diff, MARGIN=1, STATS=coeff[,i], FUN="*"), 2, sum)
 
-            z_temp[i,] <- z_temp[i,] / (N - N*lambda*delta*f_ratio_pred/(N-2))
+            z_temp[i,] <- z_temp[i,] / (N - N*lambda*delta*f_ratio_pred/(N-a))
         } # end z_temp
 
         z_prev <- z_up

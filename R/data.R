@@ -9,5 +9,6 @@
 #' Bacterial response to spatial gradients of algal-derived nutrients in a porous microplate.
 #' \emph{The ISME Journal}, 16(4), 1036–1045.
 #' \doi{10.1038/s41396-021-01163-4}
+#' @return A phyloseq-class object consisting of relative abundance table, taxonomy table, sample dataframe, and phylogenetic tree
 #' @usage data(microbiome)
 "microbiome"

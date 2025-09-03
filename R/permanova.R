@@ -3,11 +3,12 @@
 #' @param y a vector of treatments of length N
 #'
 #' @return A N by N matrix of indicators of equal treatment
+#' @importFrom phyloseq sample_data
 #' @export
 #' @examples
 #' require(phyloseq)
 #' data(microbiome)
-#' y <- microbiome@sam_data@.Data[[1]]
+#' y <- sample_data(microbiome)$Treatment
 #' getIndMat(y)
 getIndMat <- function(y){
     N <- length(y)
@@ -28,12 +29,13 @@ getIndMat <- function(y){
 #' @param y Vector of treatments
 #'
 #' @return pseudo-F value
+#' @importFrom phyloseq distance sample_data
 #' @export
 #' @examples
 #' require(phyloseq)
 #' data(microbiome)
 #' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-#' y <- microbiome@sam_data@.Data[[1]]
+#' y <- sample_data(microbiome)$Treatment
 #' pseudoF(D = D, y = y)
 pseudoF <- function(z=NULL, D = NULL, y){
     if(is.null(D)){
@@ -64,12 +66,13 @@ pseudoF <- function(z=NULL, D = NULL, y){
 #'
 #' @return list of ratio_all: vector of obtained pseudo-F values from permutations,
 #' ratio: pseudo-F value, p: p-value from PERMANOVA
+#' @importFrom phyloseq distance sample_data
 #' @export
 #' @examples
 #' require(phyloseq)
 #' data(microbiome)
 #' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-#' y <- microbiome@sam_data@.Data[[1]]
+#' y <- sample_data(microbiome)$Treatment
 #' getP(D = D, y = y)
 getP <- function(z = NULL, D = NULL, y, n_iter = 999){
     # initialize
