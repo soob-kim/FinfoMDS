@@ -4,12 +4,14 @@
 \alias{mdsObj}
 \title{Objective term of MDS}
 \usage{
-mdsObj(D, z)
+mdsObj(D, z, N)
 }
 \arguments{
 \item{D}{Original distance matrix}
 
 \item{z}{Lower dimension representation}
+
+\item{N}{Number of observations--scaling factors}
 }
 \value{
 Scalar of objective function value of MDS
@@ -21,7 +23,7 @@ Objective term of MDS
 require(phyloseq)
 data(microbiome)
 D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-y <- microbiome@sam_data@.Data[[1]]
 z0 <- cmdscale(d = D)
-mdsObj(D = D, z = z0)
+N <- dim(z0)[1]
+mdsObj(D = D, z = z0, N = N)
 }

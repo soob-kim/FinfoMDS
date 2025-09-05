@@ -13,6 +13,9 @@ Data derived from an experimental study on host-microbe interactions.
 \usage{
 data(microbiome)
 }
+\value{
+A phyloseq-class object consisting of relative abundance table, taxonomy table, sample dataframe, and phylogenetic tree
+}
 \description{
 A phyloseq-class object representing an example microbial community dataset. The dataset consists of 36 microbiome samples, half of which were co-cultured with their diatom host (Phaeodactylum tricornutum). Each microbiome comprises 72 bacterial taxa identified by amplicon sequence variants (ASVs) of the 16S rRNA gene. ASV counts represent relative abundances after applying the cumulative sum scaling (CSS) method.
 }

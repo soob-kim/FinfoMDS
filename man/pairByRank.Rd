@@ -24,7 +24,7 @@ Get p-value matrix
 require(phyloseq)
 data(microbiome)
 D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-y <- microbiome@sam_data@.Data[[1]]
+y <- sample_data(microbiome)$Treatment
 z0 <- cmdscale(d = D)
 pairByRank(z = z0, D = D, y = y)
 }

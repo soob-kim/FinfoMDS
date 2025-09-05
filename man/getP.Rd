@@ -26,6 +26,6 @@ Compute p-value from PERMANOVA test
 require(phyloseq)
 data(microbiome)
 D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-y <- microbiome@sam_data@.Data[[1]]
+y <- sample_data(microbiome)$Treatment
 getP(D = D, y = y)
 }

@@ -23,6 +23,6 @@ Compute pseudo-F statistic for PERMANOVA
 require(phyloseq)
 data(microbiome)
 D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-y <- microbiome@sam_data@.Data[[1]]
+y <- sample_data(microbiome)$Treatment
 pseudoF(D = D, y = y)
 }

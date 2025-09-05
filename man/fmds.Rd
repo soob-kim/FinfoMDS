@@ -4,9 +4,15 @@
 \alias{fmds}
 \title{FMDS calculation using MM algorithm}
 \usage{
-fmds(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X)
+fmds(D = NULL, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL)
 }
 \arguments{
+\item{D}{Square matrix of pairwise distance, size of N by N}
+
+\item{y}{Vector of label or group set, size of N}
+
+\item{X}{Object matrix; used to build distance matrix D; D is prioritized}
+
 \item{nit}{Number of iterations; 100 by default}
 
 \item{lambda}{Hyperparameter; 0.5 by default}
@@ -14,12 +20,6 @@ fmds(nit = 100, lambda = 0.5, threshold_p = 0.01, z0 = NULL, D, y, X)
 \item{threshold_p}{Lower limit of p-value difference that allows iteration}
 
 \item{z0}{Initialization of configuration; NULL by default}
-
-\item{D}{Square matrix of pairwise distance, size of N by N}
-
-\item{y}{Vector of label or group set, size of N}
-
-\item{X}{Object matrix; used to build distance matrix D; D is prioritized}
 }
 \value{
 2D representation vector, size of N by 2
@@ -32,7 +32,7 @@ set.seed(100)
 require(phyloseq)
 data(microbiome)
 D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
-y <- microbiome@sam_data@.Data[[1]]
+y <- sample_data(microbiome)$Treatment
 z0 <- cmdscale(d = D)
 fmds(z0 = z0, D = D, y = y)
 }

@@ -18,6 +18,6 @@ Get index matrix
 \examples{
 require(phyloseq)
 data(microbiome)
-y <- microbiome@sam_data@.Data[[1]]
+y <- sample_data(microbiome)$Treatment
 getIndMat(y)
 }

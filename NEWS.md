@@ -1,3 +1,3 @@
-# fmds 0.1.0
+# FinfoMDS 0.99.1
 
 * Initial CRAN submission.

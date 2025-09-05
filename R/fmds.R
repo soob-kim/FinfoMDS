@@ -46,6 +46,7 @@ pairByRank <- function(z, D, y){
 #'
 #' @param D Original distance matrix
 #' @param z Lower dimension representation
+#' @param N Number of observations--scaling factors
 #'
 #' @return Scalar of objective function value of MDS
 #' @importFrom stats dist cmdscale
@@ -56,8 +57,9 @@ pairByRank <- function(z, D, y){
 #' data(microbiome)
 #' D <- distance(microbiome, method = 'wunifrac') # requires phyloseq package
 #' z0 <- cmdscale(d = D)
-#' mdsObj(D = D, z = z0)
-mdsObj <- function(D, z){
+#' N <- dim(z0)[1]
+#' mdsObj(D = D, z = z0, N = N)
+mdsObj <- function(D, z, N){
     z_distmat <- getDistMat(z)
     return(sum((D - z_distmat)^2) / N)
 }
@@ -87,7 +89,7 @@ mdsObj <- function(D, z){
 #' y <- sample_data(microbiome)$Treatment
 #' z0 <- cmdscale(d = D)
 #' fmds(z0 = z0, D = D, y = y)
-fmds <- function(D, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL){
+fmds <- function(D = NULL, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL){
     if(is.null(D)){
         D <- getDistMat(X)
     } else {
@@ -99,6 +101,9 @@ fmds <- function(D, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL
     N <- dim(z0)[1]
     S <- dim(z0)[2]
     a <- length(unique(y))
+    if(a == 1){
+        stop("The label input is inappropriate: expected two or more groups.")
+    }
     y_indmat <- getIndMat(y)
     f_ratio <- pseudoF(z = X, D = D, y = y)
     z_temp <- z_up <- z0
@@ -119,13 +124,13 @@ fmds <- function(D, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL
         list_pair <- pairByRank(D = D, z = z_up, y = y) # _0, _z
         ind_f_ratio <- which.min(abs(f_ratio - list_pair[,1]))[1]
         f_ratio_pred <- list_pair[,2][ind_f_ratio]
-        
+
         z_distmat <- as.matrix(dist(z_up))
         f_diff_nominator <- sum((1 - a * y_indmat * (1+f_ratio_pred*(a-1)/(N-a))) *
                                     z_distmat^2)
         delta <- sign(f_diff_nominator)
         obj_conf <- abs(f_diff_nominator)
-        obj_mds <- mdsObj(D, z_up)
+        obj_mds <- mdsObj(D, z_up, N)
         obj <- lambda*obj_conf + obj_mds
 
         message(paste('epoch', t,
