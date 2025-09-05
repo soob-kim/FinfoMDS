@@ -1,3 +1,3 @@
-# FinfoMDS 0.99.1
+# FinfoMDS 0.99.2
 
 * Initial CRAN submission.
