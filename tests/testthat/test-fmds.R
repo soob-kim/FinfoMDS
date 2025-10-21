@@ -1,7 +1,7 @@
 test_that("fmds returns correct structure", {
     y = c(rep(0, 10), rep(1, 10))
     X = rbind(matrix(rnorm(30), ncol = 3),
-              matrix(rnorm(30, mean = 1), ncol = 3))
+              matrix(rnorm(30, mean = 5), ncol = 3))
     res <- fmds(y = y, X = X)
 
     expect_true(is.matrix(res))
@@ -12,7 +12,7 @@ test_that("fmds returns correct structure", {
 test_that("fmds is reproducible with fixed seed", {
     y = c(rep(0, 10), rep(1, 10))
     X = rbind(matrix(rnorm(30), ncol = 3),
-              matrix(rnorm(30, mean = 1), ncol = 3))
+              matrix(rnorm(30, mean = 5), ncol = 3))
     set.seed(123)
     res1 <- fmds(y = y, X = X)
     set.seed(123)
@@ -24,7 +24,7 @@ test_that("fmds is reproducible with fixed seed", {
 test_that("fmds preserves distances at least somewhat", {
     y = c(rep(0, 10), rep(1, 10))
     X = rbind(matrix(rnorm(30), ncol = 3),
-              matrix(rnorm(30, mean = 1), ncol = 3))
+              matrix(rnorm(30, mean = 5), ncol = 3))
     res <- fmds(y = y, X = X)
 
     d_orig <- dist(X)
@@ -40,6 +40,26 @@ test_that("fmds rejects single-label input", {
     expect_error(
         fmds(y = y, X = X),
         regexp = "inappropriate"
+    )
+})
+
+test_that("fmds rejects no input", {
+    X = matrix(rnorm(30), ncol = 3)
+    expect_error(
+        fmds(X = X),
+        regexp = "not provided"
+    )
+})
+
+test_that("fmds rejects no group differences", {
+    y = c(rep(0, 10), rep(1, 10))
+    X = rbind(matrix(rnorm(30), ncol = 3),
+              matrix(rnorm(30, mean = 0), ncol = 3))
+    D = getDistMat(X)
+    z0 = cmdscale(d = D)
+    expect_message(
+        expect_equal(fmds(y = y, X = X), z0),
+        regexp = "not necessary"
     )
 })
 

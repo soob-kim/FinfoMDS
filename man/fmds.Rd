@@ -4,7 +4,15 @@
 \alias{fmds}
 \title{FMDS calculation using MM algorithm}
 \usage{
-fmds(D = NULL, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL)
+fmds(
+  D = NULL,
+  y = NULL,
+  X,
+  nit = 100,
+  lambda = 0.5,
+  threshold_p = 0.05,
+  z0 = NULL
+)
 }
 \arguments{
 \item{D}{Square matrix of pairwise distance, size of N by N}

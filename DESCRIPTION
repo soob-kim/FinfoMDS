@@ -1,7 +1,7 @@
 Package: FinfoMDS
 Type: Package
 Title: Multidimensional Scaling with F-ratio for microbiome visualization
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: c(
     person(given = "Soobin", family = "Kim", role = c("aut", "cre"),
            email = "soob.kim00@gmail.com"),

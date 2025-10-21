@@ -89,7 +89,10 @@ mdsObj <- function(D, z, N){
 #' y <- sample_data(microbiome)$Treatment
 #' z0 <- cmdscale(d = D)
 #' fmds(z0 = z0, D = D, y = y)
-fmds <- function(D = NULL, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL){
+fmds <- function(D = NULL, y = NULL, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0 = NULL){
+    if(is.null(y)){
+        stop("The label input is not provided.")
+    }
     if(is.null(D)){
         D <- getDistMat(X)
     } else {
@@ -108,6 +111,10 @@ fmds <- function(D = NULL, y, X, nit = 100, lambda = 0.5, threshold_p = 0.05, z0
     f_ratio <- pseudoF(z = X, D = D, y = y)
     z_temp <- z_up <- z0
     p0 <- getP(D = D, y = y)$p
+    if (p0 > 0.1) {
+        message("p-value >= .1: FMDS is not necessary, returning z0 or MDS output.")
+        return(z0)     # <-- This exits the function immediately
+    }
     log_iter_mat <- matrix(0, nrow=0, ncol=6)
     colnames(log_iter_mat) <-
         c('epoch', 'obj', 'obj_mds', 'obj_confr', 'p_z', 'p_0')
